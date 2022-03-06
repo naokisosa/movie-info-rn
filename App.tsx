@@ -1,117 +1,79 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
+import {StyleSheet, View, Text, Button} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+type StackParamList = {
+  Home: undefined;
+  Movie: {
+    movieId: string;
+  };
+};
 
-import {API_KEY, API_URL} from '@env';
+type HomeProps = NativeStackScreenProps<StackParamList, 'Home'>;
+type MovieProps = NativeStackScreenProps<StackParamList, 'Movie'>;
 
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const screenOptions: NativeStackNavigationOptions = {
+  headerStyle: {
+    backgroundColor: '#222222',
+  },
+  headerTintColor: '#fff',
+};
+
+const HomeScreen = ({navigation}: HomeProps) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.homeContainer}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Movie"
+        onPress={() =>
+          navigation.navigate('Movie', {
+            movieId: '5000',
+          })
+        }
+      />
     </View>
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const MovieScreen = ({route, navigation}: MovieProps) => {
+  const {movieId} = route.params;
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.{API_KEY}
-            {API_URL}
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.movieContainer}>
+      <Text>Movie Screen {movieId}</Text>
+      <Button title="Go back" onPress={() => navigation.goBack()} />
+    </View>
+  );
+};
+
+const Stack = createNativeStackNavigator<StackParamList>();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home" screenOptions={screenOptions}>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Movie" component={MovieScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  homeContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  movieContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
