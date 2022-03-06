@@ -27,6 +27,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import {API_KEY, API_URL} from '@env';
+
 const Section: React.FC<{
   title: string;
 }> = ({children, title}) => {
@@ -75,7 +77,8 @@ const App = () => {
           }}>
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+            screen and then come back to see your edits.{API_KEY}
+            {API_URL}
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />
