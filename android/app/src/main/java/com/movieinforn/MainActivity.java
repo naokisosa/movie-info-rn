@@ -1,6 +1,7 @@
 package com.movieinforn;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle; // @react-navigation/native
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +12,10 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "MovieInfoRN";
+  }
+  
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
   }
 }
