@@ -7,9 +7,10 @@ export type Movie = {
 };
 
 export type Search = {
-  Search: Movie[];
-  totalResults: string;
-  Response: string;
+  Search?: Movie[];
+  totalResults?: string;
+  Response: 'True' | 'False';
+  Error?: string;
 };
 
 export type Rating = {
