@@ -1,8 +1,9 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
+import {ScrollView, StyleSheet, Text} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LoadingIndicator from '../../utils/components/LoadingIndicator';
 import {MovieDetail} from '../../utils/types/movie.type';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type Props = {
   movie?: MovieDetail;
