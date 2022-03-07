@@ -1,18 +1,35 @@
-import React, {useCallback} from 'react';
-import {useNavigation, useRoute} from '../../navigation/helpers';
+import {useFocusEffect} from '@react-navigation/native';
+import React, {useCallback, useState} from 'react';
+import {useQuery} from 'react-query';
+import {useRoute} from '../../navigation/helpers';
 import MovieUI from './MovieUI';
+import MovieService from '../../config/services/movie.service';
+import {MovieDetail} from '../../utils/types/movie.type';
 
 const Movie: React.FC = () => {
-  const navigation = useNavigation();
   const {
-    params: {movieId},
+    params: {movieTitle},
   } = useRoute<'Movie'>();
+  const [movie, setMovie] = useState<MovieDetail>();
+  const {refetch: getMovieDetail} = useQuery(
+    'query-movie-details',
+    async () => MovieService.getMovieByTitle(movieTitle),
+    {
+      enabled: false,
+      onSuccess: res => {
+        console.log(res.data);
+        setMovie(res.data);
+      },
+      onError: err => console.log(err),
+    },
+  );
 
-  const handlePressBack = useCallback(() => {
-    navigation.goBack();
-  }, [navigation]);
-
-  return <MovieUI movieId={movieId} onPressBack={handlePressBack} />;
+  useFocusEffect(
+    useCallback(() => {
+      getMovieDetail();
+    }, [getMovieDetail]),
+  );
+  return <MovieUI movie={movie} />;
 };
 
 export default Movie;

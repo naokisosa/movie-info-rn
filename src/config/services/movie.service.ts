@@ -1,18 +1,21 @@
+import {
+  MovieDetailResponse,
+  SearchResponse,
+} from '../../utils/types/movie.type';
 import http from './http-common';
-import {SearchResponse, MovieDetail} from '../../utils/types/movie.type';
 
 class MovieService {
-  getMovieById = (id: string): Promise<SearchResponse> => {
+  getMovieByTitle = (title: string): Promise<MovieDetailResponse> => {
     return http.get('', {
       params: {
-        i: id,
+        t: title,
         plot: 'full',
         type: 'movie',
       },
     });
   };
 
-  findMovie = (title: string, year?: string): Promise<MovieDetail> => {
+  findMovie = (title: string, year?: string): Promise<SearchResponse> => {
     return http.get('', {
       params: {
         s: title,

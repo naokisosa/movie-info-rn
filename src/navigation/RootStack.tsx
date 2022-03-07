@@ -10,7 +10,11 @@ const RootStack: React.FC = () => {
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Movie" component={Movie} />
+      <Stack.Screen
+        name="Movie"
+        component={Movie}
+        options={({route}) => ({title: route.params.movieTitle})}
+      />
     </Stack.Navigator>
   );
 };

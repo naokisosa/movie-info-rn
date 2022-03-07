@@ -7,7 +7,7 @@ const Home: React.FC = () => {
 
   const handleOnPress = useCallback(() => {
     navigation.navigate('Movie', {
-      movieId: '1000',
+      movieTitle: 'Batman Begins',
     });
   }, [navigation]);
 
