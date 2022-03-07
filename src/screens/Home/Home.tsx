@@ -18,7 +18,6 @@ const Home: React.FC = () => {
     {
       enabled: false,
       onSuccess: res => {
-        console.log(res);
         if (res.data.Response === 'True') {
           setResults(res.data.Search);
         } else {
@@ -26,7 +25,6 @@ const Home: React.FC = () => {
           setResults(undefined);
         }
       },
-      onError: err => console.log(err),
     },
   );
 

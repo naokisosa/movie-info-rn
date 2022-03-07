@@ -17,10 +17,8 @@ const Movie: React.FC = () => {
     {
       enabled: false,
       onSuccess: res => {
-        console.log(res.data);
         setMovie(res.data);
       },
-      onError: err => console.log(err),
     },
   );
 
