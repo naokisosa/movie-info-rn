@@ -13,7 +13,7 @@ const Movie: React.FC = () => {
   const [movie, setMovie] = useState<MovieDetail>();
   const {refetch: getMovieDetail} = useQuery(
     'query-movie-details',
-    async () => MovieService.getMovieByTitle(movieTitle),
+    async () => MovieService.getMovieByTitle(movieTitle, 'full'),
     {
       enabled: false,
       onSuccess: res => {
