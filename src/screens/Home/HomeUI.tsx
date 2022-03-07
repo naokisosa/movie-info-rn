@@ -6,6 +6,7 @@ import {
   Text,
   ListRenderItem,
   FlatList,
+  Pressable,
 } from 'react-native';
 import {Movie} from '../../utils/types/movie.type';
 
@@ -29,9 +30,9 @@ const HomeUI: React.FC<Props> = ({
   onPressItem,
 }) => {
   const renderItem: ListRenderItem<Movie> = ({item}) => (
-    <View>
+    <Pressable>
       <Text onPress={() => onPressItem(item.Title)}>{item.Title}</Text>
-    </View>
+    </Pressable>
   );
   return (
     <View>

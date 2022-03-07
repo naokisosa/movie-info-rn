@@ -1,16 +1,16 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {useQuery} from 'react-query';
 import {useNavigation} from '../../navigation/helpers';
 import HomeUI from './HomeUI';
 import MovieService from '../../config/services/movie.service';
 import {Movie} from '../../utils/types/movie.type';
-import {debounce} from 'throttle-debounce';
+import {debounce} from 'lodash';
 
 const Home: React.FC = () => {
   const navigation = useNavigation();
   const [title, setTitle] = useState<string>('');
   const [year, setYear] = useState<string>('');
-  const [results, setResults] = useState<Movie[]>();
+  const [results, setResults] = useState<Movie[] | undefined>();
   const [error, setError] = useState<string | undefined>();
   const {refetch: searchMovies} = useQuery(
     'query-movie-search',
@@ -23,36 +23,42 @@ const Home: React.FC = () => {
           setResults(res.data.Search);
         } else {
           setError(res.data.Error);
+          setResults(undefined);
         }
       },
       onError: err => console.log(err),
     },
   );
 
-  const debounceSearchMovies = debounce(
-    1000,
-    useCallback(() => {
-      searchMovies();
-    }, [searchMovies]),
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceSearchMovies = useCallback(
+    debounce(value => {
+      if (value.length > 0) {
+        searchMovies();
+      } else {
+        setResults(undefined);
+      }
+    }, 1000),
+    [],
   );
 
-  useEffect(() => {
-    title.length > 0 && debounceSearchMovies();
+  const handleChangeTitle = useCallback(
+    (value: string) => {
+      setTitle(value);
+      setError(undefined);
+      debounceSearchMovies(value);
+    },
+    [debounceSearchMovies],
+  );
 
-    return () => {
-      debounceSearchMovies.cancel();
-    };
-  }, [debounceSearchMovies, title.length]);
-
-  const handleChangeTitle = useCallback((value: string) => {
-    setError(undefined);
-    setTitle(value);
-  }, []);
-
-  const handleChangeYear = useCallback((value: string) => {
-    setError(undefined);
-    setYear(value);
-  }, []);
+  const handleChangeYear = useCallback(
+    (value: string) => {
+      setYear(value);
+      setError(undefined);
+      debounceSearchMovies(value);
+    },
+    [debounceSearchMovies],
+  );
 
   const handleOnPressItem = useCallback(
     (movieTitle: string) => {
