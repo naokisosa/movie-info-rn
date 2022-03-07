@@ -5,11 +5,14 @@ import {
 import http from './http-common';
 
 class MovieService {
-  getMovieByTitle = (title: string): Promise<MovieDetailResponse> => {
+  getMovieByTitle = (
+    title: string,
+    plot: 'full' | 'short',
+  ): Promise<MovieDetailResponse> => {
     return http.get('', {
       params: {
         t: title,
-        plot: 'full',
+        plot: plot,
         type: 'movie',
       },
     });
