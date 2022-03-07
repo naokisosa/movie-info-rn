@@ -1,14 +1,31 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import SearchItemUI from './SearchItemUI';
+import MovieService from '../../../config/services/movie.service';
+import {useQuery} from 'react-query';
+import {MovieDetail} from '../../../utils/types/movie.type';
 
-const SearchItem = () => {
-  return (
-    <View>
-      <Text>SearchItem</Text>
-    </View>
-  );
+type Props = {
+  movieTitle: string;
 };
 
-export default React.memo(SearchItem);
+const SearchItem: React.FC<Props> = ({movieTitle}) => {
+  const [movie, setMovie] = useState<MovieDetail>();
+  const {refetch: getMovieShortDetails} = useQuery(
+    `query-${movieTitle}`,
+    async () => MovieService.getMovieByTitle(movieTitle, 'short'),
+    {
+      enabled: false,
+      onSuccess: res => {
+        setMovie(res.data);
+      },
+    },
+  );
 
-const styles = StyleSheet.create({});
+  useEffect(() => {
+    getMovieShortDetails();
+  }, [getMovieShortDetails]);
+
+  return <SearchItemUI movie={movie} />;
+};
+
+export default SearchItem;
