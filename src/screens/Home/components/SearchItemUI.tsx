@@ -3,7 +3,6 @@ import React from 'react';
 import {MovieDetail} from '../../../utils/types/movie.type';
 import FastImage from 'react-native-fast-image';
 import LoadingIndicator from '../../../utils/components/LoadingIndicator';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 type Props = {
   movie?: MovieDetail;
@@ -22,7 +21,7 @@ const SearchItemUI: React.FC<Props> = ({movie}) => {
   return (
     <>
       {movie ? (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
           <PosterImage />
           <View style={styles.dataContainer}>
             <Text style={styles.title}>{movie.Title}</Text>
@@ -33,7 +32,7 @@ const SearchItemUI: React.FC<Props> = ({movie}) => {
             ))}
             <Text style={styles.plot}>{movie.Plot}</Text>
           </View>
-        </SafeAreaView>
+        </View>
       ) : (
         <LoadingIndicator />
       )}
