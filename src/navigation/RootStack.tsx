@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator<StackParamList>();
 const RootStack: React.FC = () => {
   return (
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Home" component={Home} options={{title: 'OMDb'}} />
       <Stack.Screen
         name="Movie"
         component={Movie}
