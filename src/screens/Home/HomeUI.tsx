@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,8 @@ import {
   Pressable,
 } from 'react-native';
 import {Movie} from '../../utils/types/movie.type';
+import SearchItem from './components/SearchItem';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type Props = {
   title?: string;
@@ -29,13 +31,21 @@ const HomeUI: React.FC<Props> = ({
   error,
   onPressItem,
 }) => {
-  const renderItem: ListRenderItem<Movie> = ({item}) => (
-    <Pressable>
-      <Text onPress={() => onPressItem(item.Title)}>{item.Title}</Text>
-    </Pressable>
+  const renderItem: ListRenderItem<Movie> = useCallback(
+    ({item}) => (
+      <Pressable
+        onPress={() => onPressItem(item.Title)}
+        style={styles.searchItemsContainer}>
+        <SearchItem movieTitle={item.Title} />
+      </Pressable>
+    ),
+    [onPressItem],
   );
+
+  const keyExtractor = useCallback((item: Movie) => item.imdbID, []);
+
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
       <TextInput
         style={styles.input}
         onChangeText={onChangeTitle}
@@ -56,24 +66,36 @@ const HomeUI: React.FC<Props> = ({
         <Text>{error}</Text>
       ) : (
         results && (
-          <FlatList
-            data={results}
-            renderItem={renderItem}
-            keyExtractor={item => item.imdbID}
-          />
+          <View style={styles.container}>
+            <FlatList
+              data={results}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              maxToRenderPerBatch={5}
+            />
+          </View>
         )
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default React.memo(HomeUI);
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   input: {
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  searchItemsContainer: {
+    marginHorizontal: 10,
+    marginVertical: 5,
+    padding: 5,
+    borderWidth: 1,
   },
 });
