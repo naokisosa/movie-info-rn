@@ -3,7 +3,7 @@ import React, {useCallback, useState} from 'react';
 import {useQuery} from 'react-query';
 import {useRoute} from '../../navigation/helpers';
 import MovieUI from './MovieUI';
-import MovieService from '../../config/services/movie.service';
+import MovieService from '../../services/movie.service';
 import {MovieDetail} from '../../utils/types/movie.type';
 
 const Movie: React.FC = () => {

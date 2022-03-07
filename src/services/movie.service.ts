@@ -1,7 +1,4 @@
-import {
-  MovieDetailResponse,
-  SearchResponse,
-} from '../../utils/types/movie.type';
+import {MovieDetailResponse, SearchResponse} from '../utils/types/movie.type';
 import http from './http-common';
 
 class MovieService {

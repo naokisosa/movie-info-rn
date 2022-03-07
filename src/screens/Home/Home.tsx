@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {useQuery} from 'react-query';
 import {useNavigation} from '../../navigation/helpers';
 import HomeUI from './HomeUI';
-import MovieService from '../../config/services/movie.service';
+import MovieService from '../../services/movie.service';
 import {Movie} from '../../utils/types/movie.type';
 import {debounce} from 'lodash';
 

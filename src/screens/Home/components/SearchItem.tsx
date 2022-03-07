@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import SearchItemUI from './SearchItemUI';
-import MovieService from '../../../config/services/movie.service';
+import MovieService from '../../../services/movie.service';
 import {useQuery} from 'react-query';
 import {MovieDetail} from '../../../utils/types/movie.type';
 
