@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LoadingIndicator from '../../utils/components/LoadingIndicator';
-import {MovieDetail, Rating} from '../../utils/types/movie.type';
+import {MovieDetail} from '../../utils/types/movie.type';
 
 type Props = {
   movie?: MovieDetail;
@@ -24,45 +18,43 @@ const MovieUI: React.FC<Props> = ({movie}) => {
       }}
     />
   );
-  const renderRating: ListRenderItem<Rating> = ({item}) => (
-    <Text>
-      - {item.Source}: {item.Value}
-    </Text>
-  );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       {movie ? (
-        <>
-          <Text style={styles.title}>{movie.Title}</Text>
-          <Text style={styles.secondaryInfo}>
-            {movie.Released} {movie.Rated} {movie.Runtime}
-          </Text>
-          <PosterImage />
-          <Text style={styles.plot}>{movie.Plot}</Text>
-          <Text>
-            <Text style={styles.bold}>Director: </Text>
-            {movie.Director}
-          </Text>
-          <Text>
-            <Text style={styles.bold}>Actors: </Text>
-            {movie.Actors}
-          </Text>
-          <Text>
-            <Text style={styles.bold}>Awards: </Text>
-            {movie.Awards}
-          </Text>
-          <Text style={styles.bold}>Ratings:</Text>
-          <FlatList
-            data={movie.Ratings}
-            renderItem={renderRating}
-            keyExtractor={item => item.Value}
-          />
-        </>
+        <SafeAreaView style={styles.container}>
+          <ScrollView>
+            <Text style={styles.title}>{movie.Title}</Text>
+            <Text style={styles.secondaryInfo}>
+              {movie.Released} {movie.Rated} {movie.Runtime}
+            </Text>
+            <PosterImage />
+            <Text style={styles.plot}>{movie.Plot}</Text>
+            <Text>
+              <Text style={styles.bold}>Director: </Text>
+              {movie.Director}
+            </Text>
+            <Text>
+              <Text style={styles.bold}>Actors: </Text>
+              {movie.Actors}
+            </Text>
+            <Text>
+              <Text style={styles.bold}>Awards: </Text>
+              {movie.Awards}
+            </Text>
+            <Text style={styles.bold}>Ratings:</Text>
+
+            {movie.Ratings.map((rating, index) => (
+              <Text key={index}>
+                - {rating.Source}: {rating.Value}
+              </Text>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
       ) : (
         <LoadingIndicator />
       )}
-    </SafeAreaView>
+    </>
   );
 };
 
