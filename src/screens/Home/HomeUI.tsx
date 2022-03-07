@@ -1,15 +1,67 @@
 import React from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  ListRenderItem,
+  FlatList,
+} from 'react-native';
+import {Movie} from '../../utils/types/movie.type';
 
 type Props = {
-  onPress: () => void;
+  title?: string;
+  year?: string;
+  onChangeTitle: (value: string) => void;
+  onChangeYear: (value: string) => void;
+  results?: Movie[];
+  error?: string;
+  onPressItem: (movieTitle: string) => void;
 };
 
-const HomeUI: React.FC<Props> = ({onPress}) => {
+const HomeUI: React.FC<Props> = ({
+  title,
+  year,
+  onChangeTitle,
+  onChangeYear,
+  results,
+  error,
+  onPressItem,
+}) => {
+  const renderItem: ListRenderItem<Movie> = ({item}) => (
+    <View>
+      <Text onPress={() => onPressItem(item.Title)}>{item.Title}</Text>
+    </View>
+  );
   return (
-    <View style={styles.container}>
-      <Text>Home Screen</Text>
-      <Button title="Go to Movie" onPress={onPress} />
+    <View>
+      <TextInput
+        style={styles.input}
+        onChangeText={onChangeTitle}
+        value={title}
+        placeholder="Title"
+      />
+      <TextInput
+        style={styles.input}
+        editable={!!title}
+        selectTextOnFocus={!!title}
+        keyboardType="decimal-pad"
+        onChangeText={onChangeYear}
+        value={year}
+        placeholder="Year"
+      />
+
+      {error ? (
+        <Text>{error}</Text>
+      ) : (
+        results && (
+          <FlatList
+            data={results}
+            renderItem={renderItem}
+            keyExtractor={item => item.imdbID}
+          />
+        )
+      )}
     </View>
   );
 };
@@ -17,9 +69,10 @@ const HomeUI: React.FC<Props> = ({onPress}) => {
 export default React.memo(HomeUI);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
