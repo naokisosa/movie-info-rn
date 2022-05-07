@@ -7,3 +7,6 @@ export default axios.create({
     apiKey: API_KEY,
   },
 });
+
+console.log("Hola");
+console.log("Chau");
